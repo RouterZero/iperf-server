@@ -1,0 +1,27 @@
+networks:
+  default:
+
+services:
+  iperf:
+    image: ghcr.io/router0/iperf-server:latest
+    deploy:
+      restart_policy:
+        condition: any
+    cap_drop:
+      # Drop all capabilities that are not needed
+      - FSETID
+      - KILL
+      - SETPCAP
+      - NET_RAW
+      - SYS_CHROOT
+      - MKNOD
+      - AUDIT_WRITE
+      - SETFCAP
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Stockholm
+    ports:
+      - "5201:5201/TCP"
+    networks:
+      default:

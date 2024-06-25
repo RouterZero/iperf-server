@@ -1,0 +1,8 @@
+#!/command/with-contenv bash
+# shellcheck shell=bash
+
+# svc-iperfd main
+main() {
+    /command/s6-setuidgid "${PUID}:${PGID}" /usr/bin/iperf3 --server "${@}"
+}
+main "${@}"
