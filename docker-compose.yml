@@ -3,7 +3,7 @@ networks:
 
 services:
   iperf:
-    image: ghcr.io/router0/iperf-server:latest
+    image: ghcr.io/routerzero/iperf-server:latest
     deploy:
       restart_policy:
         condition: any
