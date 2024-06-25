@@ -3,6 +3,11 @@
 
 # svc-iperfd main
 main() {
-    /command/s6-setuidgid "${PUID}:${PGID}" /usr/bin/iperf3 --server "${@}"
+    if [ -x "/usr/bin/iperf3" ]; then
+        /command/s6-setuidgid "${PUID}:${PGID}" /usr/bin/iperf3 --server "${@}"
+        return
+    fi
+
+    /command/s6-setuidgid "${PUID}:${PGID}" /usr/bin/iperf --server "${@}"
 }
 main "${@}"

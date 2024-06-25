@@ -22,6 +22,8 @@ services:
       PGID: 1000
       TZ: Europe/Stockholm
     ports:
+      # 5001 is default for iperf 2, and 5201 is default for iperf 3. Only one is needed at a time.
+      - "5001:5001/TCP"
       - "5201:5201/TCP"
     networks:
       default:

@@ -1,5 +1,6 @@
 group "default" {
   targets = [
+    "2_2_0",
     "3_17_1"
   ]
 }
@@ -79,10 +80,19 @@ function "get-tags" {
 # Define the build targets
 ##########################
 
+target "2_2_0" {
+  inherits   = ["build-dockerfile", "build-platforms", "build-common"]
+  cache-from = get-cache-from("2.2.0")
+  cache-to   = get-cache-to("2.2.0")
+  tags       = get-tags("2.2.0", ["2", "2.2"])
+  args       = get-args("iperf==2.2.0-r0")
+}
+
+
 target "3_17_1" {
   inherits   = ["build-dockerfile", "build-platforms", "build-common"]
   cache-from = get-cache-from("3.17.1")
   cache-to   = get-cache-to("3.17.1")
   tags       = get-tags("3.17.1", ["3", "3.17", "latest"])
-  args       = get-args("3.17.1-r0")
+  args       = get-args("iperf3==3.17.1-r0")
 }

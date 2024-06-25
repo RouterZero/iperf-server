@@ -1,4 +1,4 @@
-ARG IPERF_VERSION=3.17.1-r0
+ARG IPERF_VERSION="iperf3==3.17.1-r0"
 
 FROM scratch AS rootfs
 
@@ -11,7 +11,7 @@ FROM --platform=${TARGETPLATFORM} lscr.io/linuxserver/baseimage-alpine:3.20
 
 ARG IPERF_VERSION
 RUN set -eux \
-    && apk --update --no-cache add bash "iperf3==${IPERF_VERSION}"
+    && apk --update --no-cache add bash "${IPERF_VERSION}"
 
 COPY --from=rootfs ["/", "/"]
 
