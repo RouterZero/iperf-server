@@ -6,7 +6,7 @@ COPY ["./rootfs/", "/"]
 
 
 
-FROM --platform=${TARGETPLATFORM} lscr.io/linuxserver/baseimage-alpine:3.20
+FROM --platform=${TARGETPLATFORM} lscr.io/linuxserver/baseimage-alpine:3.21
 
 
 ARG IPERF_VERSION
