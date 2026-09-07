@@ -4,6 +4,7 @@ networks:
 services:
   iperf:
     image: ghcr.io/routerzero/iperf-server:latest
+    init: true
     deploy:
       restart_policy:
         condition: any
@@ -18,8 +19,6 @@ services:
       - AUDIT_WRITE
       - SETFCAP
     environment:
-      PUID: 1000
-      PGID: 1000
       TZ: Europe/Stockholm
     ports:
       # 5001 is default for iperf 2, and 5201 is default for iperf 3. Only one is needed at a time.

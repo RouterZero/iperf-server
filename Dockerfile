@@ -1,29 +1,16 @@
 ARG IPERF_VERSION="iperf3==3.17.1-r0"
 ARG ALPINE_VERSION="3.21"
 
-FROM scratch AS rootfs
-
-# Install s6-overlay
-COPY --from=ghcr.io/n0rthernl1ghts/s6-rootfs:3.2.3.2 ["/", "/"]
-
-COPY ["./rootfs/", "/"]
-
-
-
-ARG ALPINE_VERSION
 FROM alpine:${ALPINE_VERSION}
-
 
 ARG IPERF_VERSION
 RUN set -eux \
-    && apk --update --no-cache add bash "${IPERF_VERSION}"
+    && apk --update --no-cache add "${IPERF_VERSION}" \
+    && if [ -x /usr/bin/iperf ] && [ ! -x /usr/bin/iperf3 ]; then ln -s /usr/bin/iperf /usr/bin/iperf3; fi \
+    && addgroup -g 1000 abc \
+    && adduser -u 1000 -G abc -s /bin/false -D abc
 
-COPY --from=rootfs ["/", "/"]
-
-ENV IPERF_VERBOSE=1 \
-    S6_KEEP_ENV=1 \
-    S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-    S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0
+ENV IPERF_VERBOSE=1
 
 ARG TARGETPLATFORM
 LABEL maintainer="Aleksandar Puharic <aleksandar@puharic.com>" \
@@ -34,4 +21,6 @@ LABEL maintainer="Aleksandar Puharic <aleksandar@puharic.com>" \
 
 EXPOSE 5201/tcp
 
-ENTRYPOINT [ "/init" ]
+USER abc
+
+CMD ["/usr/bin/iperf3", "--server"]
