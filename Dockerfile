@@ -6,7 +6,7 @@ COPY ["./rootfs/", "/"]
 
 
 
-FROM --platform=${TARGETPLATFORM} lscr.io/linuxserver/baseimage-alpine:3.23
+FROM lscr.io/linuxserver/baseimage-alpine:3.22
 
 
 ARG IPERF_VERSION
@@ -23,7 +23,7 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 ENV S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0
 
 LABEL maintainer="Aleksandar Puharic <aleksandar@puharic.com>" \
-      org.opencontainers.image.source="https://github.com/RouterZero/iperf-server" \
-      org.opencontainers.image.description="Iperf3 Server ${IPERF_VERSION} - Alpine Build ${TARGETPLATFORM}" \
-      org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.version="${IPERF_VERSION}"
+    org.opencontainers.image.source="https://github.com/RouterZero/iperf-server" \
+    org.opencontainers.image.description="Iperf3 Server ${IPERF_VERSION} - Alpine Build ${TARGETPLATFORM}" \
+    org.opencontainers.image.licenses="MIT" \
+    org.opencontainers.image.version="${IPERF_VERSION}"
