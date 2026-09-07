@@ -32,5 +32,5 @@ jobs:
       - name: Build and push
         uses: docker/bake-action@v7.2.0
         with:
-          files: build/docker-bake.hcl
+          files: hack/docker-bake.hcl
           push: true

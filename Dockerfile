@@ -32,6 +32,6 @@ LABEL maintainer="Aleksandar Puharic <aleksandar@puharic.com>" \
     org.opencontainers.image.licenses="MIT" \
     org.opencontainers.image.version="${IPERF_VERSION}"
 
-EXPOSE 5201/TCP
+EXPOSE 5201/tcp
 
 ENTRYPOINT [ "/init" ]
