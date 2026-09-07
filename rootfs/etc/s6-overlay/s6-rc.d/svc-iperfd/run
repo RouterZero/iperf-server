@@ -3,11 +3,9 @@
 
 # svc-iperfd main
 main() {
-    if [ -x "/usr/bin/iperf3" ]; then
-        /command/s6-setuidgid "${PUID}:${PGID}" /usr/bin/iperf3 --server "${@}"
-        return
-    fi
+    # This will prepend service name to all output from here
+    exec > >(while read -r line; do printf "[svc-iperfd] %s\n" "${line}"; done) 2>&1
 
-    /command/s6-setuidgid "${PUID}:${PGID}" /usr/bin/iperf --server "${@}"
+    exec /usr/bin/iperf --server "${@}"
 }
-main "${@}"
+main

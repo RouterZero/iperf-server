@@ -1,7 +1,9 @@
 group "default" {
   targets = [
     "2_2_0",
-    "3_17_1"
+    "3_17_1",
+    "3_19_1",
+    "3_20"
   ]
 }
 
@@ -26,7 +28,11 @@ target "build-common" {
 ######################
 
 variable "REGISTRY_CACHE" {
-  default = "docker.io/nlss/iperf-server-cache"
+  default = "ghcr.io/routerzero/iperf-server-cache"
+}
+
+variable "ALPINE_VERSION" {
+  default = "3.21"
 }
 
 ######################
@@ -36,8 +42,10 @@ variable "REGISTRY_CACHE" {
 # Get the arguments for the build
 function "get-args" {
   params = [version]
+  variadic_params = alpine_version
   result = {
-    IPERF_VERSION = version
+    IPERF_VERSION  = version
+    ALPINE_VERSION = length(alpine_version) > 0 ? alpine_version[0] : ALPINE_VERSION
   }
 }
 
@@ -64,12 +72,10 @@ function "get-tags" {
   params = [version, extra_versions]
   result = concat(
     [
-      "docker.io/nlss/iperf-server:${version}",
       "ghcr.io/routerzero/iperf-server:${version}"
     ],
     flatten([
       for extra_version in extra_versions : [
-        "docker.io/nlss/iperf-server:${extra_version}",
         "ghcr.io/routerzero/iperf-server:${extra_version}"
       ]
     ])
@@ -93,6 +99,24 @@ target "3_17_1" {
   inherits   = ["build-dockerfile", "build-platforms", "build-common"]
   cache-from = get-cache-from("3.17.1")
   cache-to   = get-cache-to("3.17.1")
-  tags       = get-tags("3.17.1", ["3", "3.17", "latest"])
+  tags       = get-tags("3.17.1", ["3.17"])
   args       = get-args("iperf3==3.17.1-r0")
 }
+
+target "3_19_1" {
+  inherits   = ["build-dockerfile", "build-platforms", "build-common"]
+  cache-from = get-cache-from("3.19.1")
+  cache-to   = get-cache-to("3.19.1")
+  tags       = get-tags("3.19.1", ["3.19"])
+  args       = get-args("iperf3==3.19.1-r1", "3.23")
+}
+
+target "3_20" {
+  inherits   = ["build-dockerfile", "build-platforms", "build-common"]
+  cache-from = get-cache-from("3.20")
+  cache-to   = get-cache-to("3.20")
+  tags       = get-tags("3.20", ["3", "latest"])
+  args       = get-args("iperf3==3.20-r0", "3.24")
+}
+
+
