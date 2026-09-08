@@ -30,7 +30,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/bake-action@v7.2.0
+        uses: docker/bake-action@v7.3.0
         with:
           files: hack/docker-bake.hcl
           push: true
